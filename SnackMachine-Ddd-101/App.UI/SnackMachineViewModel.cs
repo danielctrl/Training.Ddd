@@ -6,14 +6,14 @@ namespace App.UI
     {
         private SnackMachine _snackMachine {get;}
 
-        public static readonly KeyValuePair<short, Action<SnackMachine>> CommandBuyASnackId = new KeyValuePair<short, Action<SnackMachine>>(1, CommandBuyASnack);
-        public static readonly KeyValuePair<short, Action<SnackMachine>> CommandInsert1CentId = new KeyValuePair<short, Action<SnackMachine>>(2, CommandInsert1Cent);
-        public static readonly KeyValuePair<short, Action<SnackMachine>> CommandInsert10CentsId = new KeyValuePair<short, Action<SnackMachine>>(3, CommandBuyASnack);
-        public static readonly KeyValuePair<short, Action<SnackMachine>> CommandInsert25CentsId = new KeyValuePair<short, Action<SnackMachine>>(4, CommandBuyASnack);
-        public static readonly KeyValuePair<short, Action<SnackMachine>> CommandInsert1DollarId = new KeyValuePair<short, Action<SnackMachine>>(5, CommandBuyASnack);
-        public static readonly KeyValuePair<short, Action<SnackMachine>> CommandInsert5DollarsId = new KeyValuePair<short, Action<SnackMachine>>(6, CommandBuyASnack);
-        public static readonly KeyValuePair<short, Action<SnackMachine>> CommandInsert20DollarsId = new KeyValuePair<short, Action<SnackMachine>>(7, CommandBuyASnack);
-        public static readonly KeyValuePair<short, Action<SnackMachine>> CommandReturnMoneyId = new KeyValuePair<short, Action<SnackMachine>>(8, CommandBuyASnack);
+        public static readonly KeyValuePair<int, Action<SnackMachine>> CommandBuyASnackId = KeyValuePair.Create(1, CommandBuyASnack);
+        public static readonly KeyValuePair<int, Action<SnackMachine>> CommandInsert1CentId = KeyValuePair.Create(2, CommandInsert1Cent);
+        public static readonly KeyValuePair<int, Action<SnackMachine>> CommandInsert10CentsId = KeyValuePair.Create(3, CommandInsert10Cents);
+        public static readonly KeyValuePair<int, Action<SnackMachine>> CommandInsert25CentsId = KeyValuePair.Create(4, CommandInsert25Cents);
+        public static readonly KeyValuePair<int, Action<SnackMachine>> CommandInsert1DollarId = KeyValuePair.Create(5, CommandInsert1Dollar);
+        public static readonly KeyValuePair<int, Action<SnackMachine>> CommandInsert5DollarsId = KeyValuePair.Create(6, CommandInsert5Dollars);
+        public static readonly KeyValuePair<int, Action<SnackMachine>> CommandInsert20DollarsId = KeyValuePair.Create(7, CommandInsert20Dollars);
+        public static readonly KeyValuePair<int, Action<SnackMachine>> CommandReturnMoneyId = KeyValuePair.Create(8, CommandReturnMoney);
 
         private static void CommandBuyASnack(SnackMachine snackMachine) => snackMachine.BuySnack();
         private static void CommandInsert1Cent(SnackMachine snackMachine) => snackMachine.InsertMoney(Money.Cent);
@@ -33,12 +33,12 @@ namespace App.UI
         public Money MoneyInside => _snackMachine.MoneyInside + _snackMachine.MoneyInTransaction;
         
 
-        public bool ValidateCommand(ConsoleKeyInfo commandKey)
+        public bool ValidateCommand(ConsoleKeyInfo commandKeyInfo)
         {
-            if (!short.TryParse(commandKey.KeyChar.ToString(), out var commandKeyAsShort))
+            if (!int.TryParse(commandKeyInfo.KeyChar.ToString(), out var commandKey))
                 return false;
 
-            short[] commandIds = {
+            int[] commandIds = {
                 CommandBuyASnackId.Key,
                 CommandInsert1CentId.Key,
                 CommandInsert10CentsId.Key,
@@ -49,22 +49,28 @@ namespace App.UI
                 CommandReturnMoneyId.Key,
             };
 
-            return commandIds.Contains(commandKeyAsShort);
+            return commandIds.Contains(commandKey);
         }
 
-        public void ExecuteCommand(ConsoleKeyInfo commandKey)
+        public void ExecuteCommand(ConsoleKeyInfo commandIdKey)
         {
-            if (!short.TryParse(commandKey.KeyChar.ToString(), out var commandKeyAsShort))
+            if (!int.TryParse(commandIdKey.KeyChar.ToString(), out var commandId))
                 throw new InvalidOperationException("Invalid command");
 
-            if(commandKeyAsShort == CommandBuyASnackId.Key) CommandBuyASnackId.Value(_snackMachine);
-            else if(commandKeyAsShort == CommandInsert1CentId.Key) CommandInsert1CentId.Value(_snackMachine);
-            else if(commandKeyAsShort == CommandInsert10CentsId.Key) CommandInsert10CentsId.Value(_snackMachine);
-            else if(commandKeyAsShort == CommandInsert25CentsId.Key) CommandInsert25CentsId.Value(_snackMachine);
-            else if(commandKeyAsShort == CommandInsert1DollarId.Key) CommandInsert1DollarId.Value(_snackMachine);
-            else if(commandKeyAsShort == CommandInsert5DollarsId.Key) CommandInsert5DollarsId.Value(_snackMachine);
-            else if(commandKeyAsShort == CommandInsert20DollarsId.Key) CommandInsert20DollarsId.Value(_snackMachine);
-            else if(commandKeyAsShort == CommandReturnMoneyId.Key) CommandReturnMoneyId.Value(_snackMachine);
+            switch (commandId)
+            {
+                default:
+                    break;
+            }
+
+            if(commandId == CommandBuyASnackId.Key) CommandBuyASnackId.Value(_snackMachine);
+            else if(commandId == CommandInsert1CentId.Key) CommandInsert1CentId.Value(_snackMachine);
+            else if(commandId == CommandInsert10CentsId.Key) CommandInsert10CentsId.Value(_snackMachine);
+            else if(commandId == CommandInsert25CentsId.Key) CommandInsert25CentsId.Value(_snackMachine);
+            else if(commandId == CommandInsert1DollarId.Key) CommandInsert1DollarId.Value(_snackMachine);
+            else if(commandId == CommandInsert5DollarsId.Key) CommandInsert5DollarsId.Value(_snackMachine);
+            else if(commandId == CommandInsert20DollarsId.Key) CommandInsert20DollarsId.Value(_snackMachine);
+            else if(commandId == CommandReturnMoneyId.Key) CommandReturnMoneyId.Value(_snackMachine);
             else throw new InvalidOperationException("Invalid command");
         }
     }

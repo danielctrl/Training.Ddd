@@ -13,18 +13,25 @@ namespace App.UI
 
         public StringBuilder Render()
         {
-            return RenderUserCommands()
-                .AppendLine()
+            return RenderCustomerRelatedInfo()
+                .AppendLine().AppendLine()
                 .Append(RenderAdministrativeInfo());
         }
 
-        private StringBuilder RenderUserCommands()
+        private StringBuilder RenderCustomerRelatedInfo()
         {
             var strBuilder = new StringBuilder();
 
             return strBuilder
-                .AppendLine($"{SnackMachineViewModel.CommandInsert1CentId.Key}) Insert ₵1")
-                .AppendLine($"Money inserted: <<{_snackMachineViewModel.MoneyInTransaction}>>");
+                .AppendLine($"{SnackMachineViewModel.CommandBuyASnackId.Key}) Buy Snack")
+                .AppendLine($"{SnackMachineViewModel.CommandInsert1CentId.Key}) Insert ¢1")
+                .AppendLine($"{SnackMachineViewModel.CommandInsert10CentsId.Key}) Insert ¢10")
+                .AppendLine($"{SnackMachineViewModel.CommandInsert25CentsId.Key}) Insert ¢25")
+                .AppendLine($"{SnackMachineViewModel.CommandInsert1DollarId.Key}) Insert $1")
+                .AppendLine($"{SnackMachineViewModel.CommandInsert5DollarsId.Key}) Insert $5")
+                .AppendLine($"{SnackMachineViewModel.CommandInsert20DollarsId.Key}) Insert $20")
+                .AppendLine()
+                .AppendLine($"Money Inserted: <<{_snackMachineViewModel.MoneyInTransaction}>>");
         }
 
         private StringBuilder RenderAdministrativeInfo()
@@ -32,33 +39,14 @@ namespace App.UI
             var strBuilder = new StringBuilder();
 
             return strBuilder
-                .AppendLine("admin ...")
-                .AppendLine($"Money inside <<{00}>>");
+                .AppendLine("Administrative data ...")
+                .AppendLine($"{_snackMachineViewModel.MoneyInside.OneCentCount}x ¢1")
+                .AppendLine($"{_snackMachineViewModel.MoneyInside.TenCentCount}x ¢10")
+                .AppendLine($"{_snackMachineViewModel.MoneyInside.QuarterCount}x ¢25")
+                .AppendLine($"{_snackMachineViewModel.MoneyInside.OneDollarCount}x $1")
+                .AppendLine($"{_snackMachineViewModel.MoneyInside.FiveDollarCount}x $5")
+                .AppendLine($"{_snackMachineViewModel.MoneyInside.TwentyDollarCount}x $20")
+                .AppendLine($"Money inside <<{_snackMachineViewModel.MoneyInside}>>");
         }
     }
-
-    /*
-    User Commands
-        How to use ....
-
-        1: Buy a snack
-        2: Put ₵1
-        3: Put ₵10
-        4: Put ₵25
-        5: Put $1
-        6: Put $5
-        7: Put $20
-        8: Return Money
-        
-        Money Inserted: $10.25 or ₵45
-
-    Administrative Info
-        Money Inside: $10.25 or ₵45
-        8x ₵1
-        8x ₵10
-        8x ₵25
-        8x $1
-        8x $5
-        8x $20
-    */
 }
